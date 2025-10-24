@@ -1,0 +1,18 @@
+{
+    "robloxLsp.diagnostics.globals": [
+        "getgenv",
+        "request",
+        "hookfunction",
+        "printconsole",
+        "fireclickdetector",
+        "Drawing",
+        "isrenderobj",
+        "writefile",
+        "makefolder",
+        "setreadonly",
+        "getnamecallmethod",
+        "newcclosure",
+        "checkcaller",
+        "getrawmetatable"
+    ]
+}
