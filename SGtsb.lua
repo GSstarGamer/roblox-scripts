@@ -89,15 +89,35 @@ Visual:AddToggle({
 local Combat = GeneralTab:CreateSection({ Name = "Combat", Side = "Right" })
 
 
-getgenv().ModifyMoves = false
-Combat:AddToggle({
-    Name = "Modify Moves",
-    Flag = "Modify_Moves",
-    Callback = function(val) 
-        getgenv().ModifyMoves = val
-    end
+-- getgenv().ModifyMoves = false
+-- Combat:AddToggle({
+--     Name = "Modify Moves",
+--     Flag = "Modify_Moves",
+--     Callback = function(val) 
+--         getgenv().ModifyMoves = val
+--     end
+-- })
+
+
+local WallComboTP = GeneralTab:CreateSection({ Name = "Wall Combo TP", Side = "Right" })
+
+
+
+WallComboTP:AddDropdown({
+    Name = "Select Wall to TP",
+    List = {"Apple","Banana","Cherry"},
+    Callback = function(val) print("Picked", val) end
 })
 
+
+getgenv().TPonCombo = false
+WallComboTP:AddToggle({
+    Name = "TP on Wall Combo",
+    Flag = "TPonCombo",
+    Callback = function(val) 
+        getgenv().TPonCombo = val
+    end
+})
 
 if not remote then
     error("Communicate remote not found")
@@ -107,12 +127,12 @@ end
 local function handleMove(name)
     if not getgenv().ModifyMoves then return end
 
-    if name == "Lethal Whirlwind Stream" then
-        local char = player.Character
-        if char then
-            char.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame * CFrame.new(0, 10, 0)
-        end
-    end
+    -- if name == "Lethal Whirlwind Stream" then
+    --     local char = player.Character
+    --     if char then
+    --         char.HumanoidRootPart.CFrame = char.HumanoidRootPart.CFrame * CFrame.new(0, 10, 0)
+    --     end
+    -- end
 end
 
 local mt = getrawmetatable(game)
@@ -133,6 +153,13 @@ mt.__namecall = newcclosure(function(self, ...)
             if v["ToolName"] then
                 print("used move:", v["ToolName"])
                 handleMove(v["ToolName"])
+            end
+
+            if v["Goal"] == "Wall Combo" then
+                print("wall combo detected, teleporting...")
+                local char = player.Character
+                char.HumanoidRootPart.CFrame = CFrame.new(377, 441, 309)
+                task.wait(0.1)
             end
         end
     end
